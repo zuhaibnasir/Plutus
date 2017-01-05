@@ -1,0 +1,81 @@
+@model Plutus.Models.Card
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Card</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.APR)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.APR)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BankName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BankName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CardName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CardName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditLimit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreditLimit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DueDay)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DueDay)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WebsiteID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WebsiteID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Website.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Website.Name)
+        </dd>
+        <dt>
+            Paid for this month
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MonthlyRecords.Where(x=>x.Month == 1).FirstOrDefault().IsPaid)
+        </dd>
+
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Currrently Used In</th>                    
+                </tr>
+                @foreach (var item in Model.UsedBy) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

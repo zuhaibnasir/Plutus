@@ -1,0 +1,71 @@
+@model Plutus.Models.Card
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Card</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ID" />
+        <div class="form-group">
+            <label asp-for="APR" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="APR" class="form-control" />
+                <span asp-validation-for="APR" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BankName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="BankName" class="form-control" />
+                <span asp-validation-for="BankName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CardName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CardName" class="form-control" />
+                <span asp-validation-for="CardName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreditLimit" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CreditLimit" class="form-control" />
+                <span asp-validation-for="CreditLimit" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DueDay" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DueDay" class="form-control" />
+                <span asp-validation-for="DueDay" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="WebsiteID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="WebsiteID" class="form-control" />
+                <span asp-validation-for="WebsiteID" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
