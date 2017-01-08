@@ -151,5 +151,18 @@ namespace Plutus.Controllers
         {
             return _context.Cards.Any(e => e.ID == id);
         }
+
+        public async Task<IActionResult> Dashboard(int currentMonth) {
+                       
+            bool isPaid = _context.MonthlyRecords.Where(m=>m.Month == currentMonth).All(m => m.IsPaid);
+            var cards = _context.Cards.Include(c => c.MonthlyRecords).ThenInclude(m => m.DailyRecords);
+            int cardsPaid = _context.Cards.Where(c=>c.MonthlyRecords.FirstOrDefault(m=>m.Month == currentMonth).IsPaid).Count();
+
+            ViewBag.Month = DateTime.Now.ToString("MMMM yyyy");
+            ViewBag.Clear = String.Format("Monthly Payment Status: {0}", isPaid ? "Clear (No Payments Pending)" : "Payments Pending");
+            ViewBag.CardsPaid = String.Format("Cards Paid: {0}/{1}", cardsPaid, cards.Count());
+
+            return View(await cards.ToListAsync());
+        }
     }
 }
