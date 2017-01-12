@@ -164,5 +164,17 @@ namespace Plutus.Controllers
 
             return View(await cards.ToListAsync());
         }
+
+        public async Task<IActionResult> DailyRecords() {
+            DateTime currentDate = DateTime.Now;
+            int month = currentDate.Month;
+            bool dateExists = _context.DailyRecords.Any(d => d.Date == currentDate);
+            DateTime filterDate = dateExists ? currentDate : _context.DailyRecords.Where(d => d.Date.Month == month).OrderByDescending(d => d.Date).First().Date;
+
+            var dailyRecords = _context.DailyRecords.Where(d => d.Date == filterDate);
+
+            return PartialView(await dailyRecords.ToListAsync());
+        }
+
     }
 }
