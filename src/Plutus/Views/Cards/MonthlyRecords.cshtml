@@ -4,45 +4,84 @@
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .dateCol {
+        width: 200px;
+    }
 
+    .dataCol {
+        overflow-x:scroll;
+    }
+    .headRow{
+        height:100px;
+    }
+    .dueDate {
+        font-size:smaller;
+        font-weight:normal;
+    }
+    .dueDateP{
+        color:red;
+        font-size:smaller;
+        font-weight:normal;
+    }
+    .paid{
+        background-color:white;
+    }
+    .notPaid{
+        background-color:gray;
+    }
+</style>
 <h2>View</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            @foreach (var record in Model.First().BalanceRecords) {
-                <th>
-                    @record.CardName
-                    <br />
-                    @Html.Raw(record.DaysToDueDate)
-                </th>
-            }
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            @foreach (var record in item.BalanceRecords) {
-                <td>
-                    @record.BalanceToday
-                </td>
-            }
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
+<table class="table" style="table-layout:fixed">
+    <tr>
+        <td class="dateCol">
+            <table class="table">
+                <thead>
+                    <tr class="headRow"><th>@Html.DisplayNameFor(model => model.Date)</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </td>
+        <td class="dataCol">
+           @* <div style="width:100%;overflow-x:scroll;">*@
+                <table class="table">
+                    <thead>
+                        <tr class="headRow">
+                            @foreach (var record in Model.First().BalanceRecords) {
+                                <th>
+                                    @record.CardName
+                                    <br />
+                                    @Html.Raw(record.DaysToDueDate)
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                @foreach (var record in item.BalanceRecords) {
+                                    <td class="@record.ClearClass">
+                                        @Html.DisplayFor(modelItem => record.BalanceToday)
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+           <!-- </div>-->
+        </td>
+    </tr>
 </table>
+

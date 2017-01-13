@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace Plutus.Models
 {
     public class DateRecord {
@@ -35,12 +36,16 @@ namespace Plutus.Models
         public string CardName { get { return _dailyRecord.MonthlyData.Card.CardName; } }
         public string BankName { get { return _dailyRecord.MonthlyData.Card.BankName; } }
         public decimal TotalCredit { get { return _dailyRecord.MonthlyData.Card.CreditLimit; } }
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public decimal BalanceToday { get { return TotalCredit - _dailyRecord.AvailableCredit; } }
-
+        public string ClearClass { get {
+                return _dailyRecord.MonthlyData.IsPaid ? "paid" : "notPaid";
+            } }
         public string DaysToDueDate { get {
                 int days = _dailyRecord.MonthlyData.Card.DueDay - Date.Day;
                 string dueDate = new DateTime(DateTime.Now.Year, _dailyRecord.MonthlyData.Month, _dailyRecord.MonthlyData.Card.DueDay).ToString("MMMM dd yyyy");
-                return days > 0 ? String.Format("<span title='Due Date: {0}'>{1} days remaining</span>", dueDate, days) : String.Format("<span title='{0}' style='color:red'>Past Due</span>", dueDate);
+                return days > 0 ? String.Format("<span title='Due Date: {0}' class='dueDate'>{1} days remaining</span>", dueDate, days) : String.Format("<span title='{0}' class='dueDateP'>Past Due</span>", dueDate);
             } }
 
         public BalanceRecord(DailyData dailyRecord) {
