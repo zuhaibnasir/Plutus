@@ -168,12 +168,21 @@ namespace Plutus.Controllers
         public async Task<IActionResult> DailyRecords() {
             DateTime currentDate = DateTime.Now;
             int month = currentDate.Month;
-            bool dateExists = _context.DailyRecords.Any(d => d.Date == currentDate);
+            bool dateExists = _context.DailyRecords.Any(d => d.Date.Date.Equals(currentDate.Date));
             DateTime filterDate = dateExists ? currentDate : _context.DailyRecords.Where(d => d.Date.Month == month).OrderByDescending(d => d.Date).First().Date;
 
-            var dailyRecords = _context.DailyRecords.Where(d => d.Date == filterDate);
-
+            var dailyRecords = _context.DailyRecords.Where(d => d.Date.Date.Equals(filterDate.Date));
+            
             return PartialView(await dailyRecords.ToListAsync());
+        }
+
+        public  ActionResult MonthlyRecords() {
+            DateTime currentDate = DateTime.Now;
+            int month = currentDate.Month;           
+
+            var dailyRecords = _context.DailyRecords.Include(d=>d.MonthlyData).ThenInclude(m=>m.Card).Where(d => d.MonthlyData.Month == month);
+            List<DateRecord> list = DateRecord.GetDailyRecords(dailyRecords.ToList());
+            return View(list);
         }
 
     }
